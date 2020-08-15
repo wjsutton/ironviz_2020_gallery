@@ -45,10 +45,8 @@ df <- filter(df,!is.na(urls_expanded_url))
 short_urls <- df$urls_expanded_url[nchar(df$urls_expanded_url)<35]
 expanded_urls <- unique((longurl::expand_urls(short_urls)))
 
-
-#url_df <- data.frame(url = urls)
+# Join longurls back to original dataset and replace if a longurl is available
 url_df <- dplyr::left_join(df,expanded_urls, by = c("urls_expanded_url" = "orig_url"))
-
 df$urls <- ifelse(!is.na(url_df$expanded_url),url_df$expanded_url,url_df$urls_expanded_url)
 
 df <- df %>% filter(nchar(urls)>=35)
