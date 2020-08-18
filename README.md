@@ -201,3 +201,73 @@ To end we write the csv file locally.
 
 
 ### Phase :three: Building HTML Gallery Page 
+
+For this final section requires three files: `ironviz.html`, `image_grid.css`, & `ironviz_build_html.R`
+
+`ironviz.html` is a static html file which can be regenerate using an R script, `ironviz_build_html.R`. This allows any new images to be added to the gallery page automatically and it refreshes the order of the images so each entry has a fair chance of being top of the page for a while.
+
+`image_grid.css` is our style sheet referenced in `ironviz.html` it takes our list of images and arranges them in a grid up to 4 images wide depending on the device viewing the page.
+
+`ironviz_build_html.R` takes our .csv file of submission tweets from Phase 2, randomises their order and pastes them into a html file. As most of the html doesn’t change except the images and the number of images quoted I’ve pre-made these files and save them as .txt files under the folder `html`.
+Reading/writing html files in R can be acomplished using the readLines & writeLines functions.
+
+```
+# Reading
+x <- file(“path/to/file.txt”)
+text <- readLines(x)
+
+# Writing
+y <- file(“path/to/file.txt”)
+writeLines(text, y)
+
+# Remembering to close the file connections after use:
+close(x)
+close(y)
+```
+Using these functions we will update the blurb with the number of vizs,
+```
+blurb_temp_file <- file("html/blurb_template.txt")
+blurb <- readLines(blurb_temp_file)
+blurb <- gsub('NUM_OF_VIZZES',number_of_vizzes,blurb)
+
+blurb_file <- file("html/blurb.txt")
+writeLines(blurb, blurb_file)
+close(blurb_file)
+close(blurb_temp_file)
+```
+write the list of images,
+```
+fileConn <- file("html/img_list.txt")
+writeLines(ironviz_links, fileConn)
+close(fileConn)
+```
+And write the entire html file.
+```
+# Header + blurb + images + footer = html file
+
+header_file <- file("html/header.txt")
+blurb_file <- file("html/blurb.txt")
+images_file <- file("html/img_list.txt")
+footer_file <- file("html/footer.txt")
+
+header <- readLines(header_file)
+blurb <- readLines(blurb_file)
+images <- readLines(images_file)
+footer <- readLines(footer_file)
+
+full_html <- c(header,blurb,images,footer)
+
+html_file <- file("gallery/ironviz.html")
+writeLines(full_html, html_file)
+close(html_file)
+
+close(header_file)
+close(blurb_file)
+close(images_file)
+close(footer_file)
+```
+
+To test the gallery page you can open the html file in a Chrome web browser, or by using the Live Server extension from VS Code and done!
+
+
+![](ironviz_gallery_image.PNG)
