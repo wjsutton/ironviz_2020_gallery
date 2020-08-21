@@ -5,7 +5,7 @@
 
 [![Status](https://www.repostatus.org/badges/latest/wip.svg)]() [![GitHub Issues](https://img.shields.io/github/issues/wjsutton/ironviz_2020_gallery.svg)](https://github.com/wjsutton/ironviz_2020_gallery/issues) [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/wjsutton/ironviz_2020_gallery.svg)](https://github.com/wjsutton/ironviz_2020_gallery/pulls) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
-A Gallery of 2020 Ironviz submissions found on Twitter. Offshoot from [wjsutton/datafam](https://github.com/wjsutton/datafam) for reproducability.
+A Gallery of 2020 Ironviz submissions found on Twitter. An offshoot from [wjsutton/datafam](https://github.com/wjsutton/datafam) for reproducibility.
  
 :construction: Repo Under Construction :construction: 
 
@@ -55,7 +55,7 @@ The function `function_get_and_save_tweets.R` builds from the rtweet function `r
 `function_get_and_save_tweets.R` takes the arguments:
 
 - "text" the term you want to search Twitter for
-- "n" the amount of tweets (statuses) you want to return
+- "n" the number of tweets (statuses) you want to return
 - "path" the file path where to store the tweets
 
 Please note there is are limitations on `rtweet::search_tweets()` and hence `function_get_and_save_tweets.R`:
@@ -67,7 +67,7 @@ Please note there is are limitations on `rtweet::search_tweets()` and hence `fun
 
 From running this project I have noticed that some tweets including the term '#ironviz' aren't captured by `function_get_and_save_tweets.R` and additionally didn't appear on the #ironviz feed. These can be added manually by finding the status_id of the tweet and running it in the script `ironviz_get_missed_tweets.R`. 
 
-To get the status _id of the tweet you need to click into the tweet to see the url
+To get the status _id of the tweet you need to click into the tweet to see the URL
 
 e.g. https://twitter.com/jrcopreros/status/1290738849530941446
 
@@ -83,7 +83,7 @@ Other cases this script was used for:
 
 #### Outline
 
-Using the data collected in Phase 1, we are looking for urls under the column urls_expanded_url that look like either of these:
+Using the data collected in Phase 1, we are looking for URLs under the column urls_expanded_url that look like either of these:
 
 Case 1. https://public.tableau.com/views/dashboard_name/tab_name?.......
 
@@ -92,10 +92,10 @@ Case 2. https://public.tableau.com/profile/profile_name#!/vizhome/dashboard_name
 There are a few issues we'll run into:
 
 1. Tweets that aren't ironviz submissions but 'inspired by' posts
-2. Submission urls that link to a profile rather than a viz
-3. Short/compressed urls
+2. Submission URLs that link to a profile rather than a viz
+3. Short/compressed URLs
 
-From these links we'll extract a screenshot of the dashboard to add to the gallery. Lastly we'll write a .csv file containing the screenshoot, link to the submission tweet and any other data we'll need for the gallery page.
+From these links, we'll extract a screenshot of the dashboard to add to the gallery. Lastly, we'll write a .csv file containing the screenshot, link to the submission tweet and any other data we'll need for the gallery page.
 
 #### Tackling Issues  
 
@@ -105,18 +105,18 @@ Issues 1 & 2 were identified midway through the project while I was updating the
 ```
 ironviz <- ironviz %>% filter(status_id != '1286048757071646720')
 ```
-A less manual solution may be achieived by work along the lines of identifying tweets containing the word 'submission' and compared against 'inspired' but there's no guaranttee of this given the nature of freetext datasets.
+A less manual solution may be achieved by work along the lines of identifying tweets containing the word 'submission' and compared against 'inspired' but there's no guarantee of this given the nature of free-text datasets.
 
-2. Urls that are profiles rather than vizs won't be regonised and end up in a separate data frame used for checking. Again manually this means checking the profile and find the correct viz (matching it to the tweet) and replacing the url in the dataset, e.g.
+2. URLs that are profiles rather than vizs won't be recognised and end up in a separate data frame used for checking. Again manually this means checking the profile and find the correct viz (matching it to the tweet) and replacing the URL in the dataset, e.g.
 
 ```
 df$urls_expanded_url <- gsub('^https://public.tableau.com/profile/aashique.s#!/$'
                              ,'https://public.tableau.com/profile/aashique.s#!/vizhome/LifeofaSickleCellWarrior/LifeofaSICKLECELLWARRIOR'
                              ,df$urls_expanded_url)
 ```
-Another less manual approach would be to make a script that found the most recently published viz on the profile and include that, or match text in the tweet to the dashboard title, again there is no guarantee that would work 100% of the time, especially if the tweet was posted days or weeks in the past.
+Another less manual approach would be to make a script that found the most recently published viz on the profile and include that or match the text in the tweet to the dashboard title, again no guarantee this method would work 100% of the time, especially if the tweet was posted days or weeks in the past.
 
-3. Short urls can be found in the dataset, despite being under the column `urls_expanded_url`. Short urls are identified as of url with less than 35 characters. Using the `longurl` package these urls can be expanded and are then fed back into the dataset, e.g.
+3. Short URLs can be found in the dataset, despite being under the column `urls_expanded_url`. Short URLs are identified as a URL with less than 35 characters. Using the `longurl` package these URLs can be expanded and are then fed back into the dataset, e.g.
 
 ```
 # Expand short urls
@@ -127,7 +127,7 @@ expanded_urls <- unique((longurl::expand_urls(short_urls)))
 url_df <- dplyr::left_join(df,expanded_urls, by = c("urls_expanded_url" = "orig_url"))
 df$urls <- ifelse(!is.na(url_df$expanded_url),url_df$expanded_url,url_df$urls_expanded_url)
 ```
-Lastly some urls failed to be expanded by longurl, these were manually opened and replaced with the correct link in a similar fashion to issue 2.
+Lastly, some urls failed to be expanded by longurl, these were manually opened and replaced with the correct link in a similar fashion to issue 2.
 
 ```
 df$urls_expanded_url <- gsub('^http://shorturl.at/fGLMS$'
@@ -154,7 +154,7 @@ Find any link that starts 'https://public.tableau.com/views'
 Followed by a "?:/" 
 Then any characters
 Ending with "?" 
-*Note that R requires any use of \ to be escaped with another \, so \s would become \\s*
+*Note that R requires any use of \ to be escaped with another backslash, so \s would become \\s*
 
 **Case 2**
 ```
@@ -174,16 +174,16 @@ AND also contains the term 'vizhome'
 This is a Tableau Public link:
 https://public.tableau.com/profile/fredfery#!/vizhome/ThefailingoftheFirstworldcountriesagainstCovid-19ironviz2020/Manyfirstworldleadershavefailedintheirresponsetocoronavirus
 
-This is screenshot of the link:
+This is a screenshot of the link:
 https://public.tableau.com/static/images/Th/ThefailingoftheFirstworldcountriesagainstCovid-19ironviz2020/Manyfirstworldleadershavefailedintheirresponsetocoronavirus/1.png
 
 The form is like this:
 https://public.tableau.com/static/images/da/dashboard_name/tab_name/1.png
 where da is the first two letters of the dashboard name.
 
-In the script `ironviz_find_submissions.R` I take a list of urls
+In the script `ironviz_find_submissions.R` I take a list of URLs
 1. check which type of Tableau Public link 
-2. using `str_locate` from `stringr` identify start and end points 
+2. using `str_locate` from `stringr` identify start and endpoints 
 3. insert 'static/images', '/da/' and '/1.png' to convert the link
 
 ##### Creating Tweet Links
@@ -204,12 +204,12 @@ To end we write the csv file locally.
 
 For this final section requires three files: `ironviz.html`, `image_grid.css`, & `ironviz_build_html.R`
 
-`ironviz.html` is a static html file which can be regenerate using an R script, `ironviz_build_html.R`. This allows any new images to be added to the gallery page automatically and it refreshes the order of the images so each entry has a fair chance of being top of the page for a while.
+`ironviz.html` is a static HTML file which can be regenerated using an R script, `ironviz_build_html.R`. This allows any new images to be added to the gallery page automatically and it refreshes the order of the images so each entry has a fair chance of being top of the page for a while.
 
 `image_grid.css` is our style sheet referenced in `ironviz.html` it takes our list of images and arranges them in a grid up to 4 images wide depending on the device viewing the page.
 
-`ironviz_build_html.R` takes our .csv file of submission tweets from Phase 2, randomises their order and pastes them into a html file. As most of the html doesn’t change except the images and the number of images quoted I’ve pre-made these files and save them as .txt files under the folder `html`.
-Reading/writing html files in R can be acomplished using the readLines & writeLines functions.
+`ironviz_build_html.R` takes our .csv file of submission tweets from Phase 2, randomises their order and pastes them into a HTML file. As most of the HTML doesn’t change except the images and the number of images quoted I’ve pre-made these files and save them as .txt files under the folder `html`.
+Reading/writing HTML files in R can be accomplished using the readLines & writeLines functions.
 
 ```
 # Reading
@@ -241,7 +241,7 @@ fileConn <- file("html/img_list.txt")
 writeLines(ironviz_links, fileConn)
 close(fileConn)
 ```
-And write the entire html file.
+And write the entire HTML file.
 ```
 # Header + blurb + images + footer = html file
 
@@ -267,7 +267,7 @@ close(images_file)
 close(footer_file)
 ```
 
-To test the gallery page you can open the html file in a Chrome web browser, or by using the Live Server extension from VS Code and done!
+To test the gallery page you can open the HTML file in a Chrome web browser, or by using the Live Server extension from VS Code and done!
 
 
 ![](ironviz_gallery_image.PNG)
