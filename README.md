@@ -29,8 +29,10 @@ This project involves building a HTML gallery webpage of Tableau Public ironviz 
 This project can be divided up into 3 main phases of work
 
 1. Pulling #ironviz and #ironviz2020 tweets from Twitter
-2. Identifying Tableau Public links and obtaining dashboard images
+2. Identifying Tableau Public URLs and obtaining dashboard images
 3. Building HTML code to displaying images in a grid
+
+![](ironviz_gallery_flow_diagram.PNG)
 
 ### :checkered_flag: Getting Started
 
@@ -61,7 +63,7 @@ The function `function_get_and_save_tweets.R` builds from the rtweet function `r
 Please note there is are limitations on `rtweet::search_tweets()` and hence `function_get_and_save_tweets.R`:
 
 - Only returns data from the past 6-9 days. 
-- To return more than 18,000 statuses you will need to rework the function so that `rtweet::search_tweets()` inludes the clause "retryonratelimit = TRUE".
+- To return more than 18,000 statuses you will need to rework the function so that `rtweet::search_tweets()` includes the clause "retryonratelimit = TRUE".
 
 #### Manual workaround for tweets not pulled from API
 
@@ -79,7 +81,7 @@ Other cases this script was used for:
 - adding comments where the user posted a tweet about their ironviz then in the comments gave the Tableau Public link
 
 
-### Phase :two: Identifying Tableau Public Links
+### Phase :two: Identifying Tableau Public URLs
 
 #### Outline
 
@@ -95,7 +97,7 @@ There are a few issues we'll run into:
 2. Submission URLs that link to a profile rather than a viz
 3. Short/compressed URLs
 
-From these links, we'll extract a screenshot of the dashboard to add to the gallery. Lastly, we'll write a .csv file containing the screenshot, link to the submission tweet and any other data we'll need for the gallery page.
+From these URLs, we'll extract a screenshot of the dashboard to add to the gallery. Lastly, we'll write a .csv file containing the screenshot, link to the submission tweet and any other data we'll need for the gallery page.
 
 #### Tackling Issues  
 
@@ -135,7 +137,7 @@ df$urls_expanded_url <- gsub('^http://shorturl.at/fGLMS$'
                              ,df$urls_expanded_url)
 ```
 
-#### Identifying Tableau Public Links
+#### Identifying Tableau Public URLs
 
 Tableau Public viz submissions come in two forms:
 
@@ -169,7 +171,7 @@ Ending with "?"
 AND also contains the term 'vizhome'
 *Note that R requires any use of \ to be escaped with another \, so \s would become \\s*
 
-#### Converting Links into Screenshots
+#### Converting URLs into Screenshots
 
 This is a Tableau Public link:
 https://public.tableau.com/profile/fredfery#!/vizhome/ThefailingoftheFirstworldcountriesagainstCovid-19ironviz2020/Manyfirstworldleadershavefailedintheirresponsetocoronavirus
@@ -186,7 +188,7 @@ In the script `ironviz_find_submissions.R` I take a list of URLs
 2. using `str_locate` from `stringr` identify start and endpoints 
 3. insert 'static/images', '/da/' and '/1.png' to convert the link
 
-##### Creating Tweet Links
+##### Creating Tweet URLs
 
 Thankfully this is much more straightforward as we have the elements divided up, we just need to paste them all together. 
 
