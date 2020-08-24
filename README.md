@@ -3,12 +3,10 @@
 </h1>
 
 
-[![Status](https://www.repostatus.org/badges/latest/wip.svg)]() [![GitHub Issues](https://img.shields.io/github/issues/wjsutton/ironviz_2020_gallery.svg)](https://github.com/wjsutton/ironviz_2020_gallery/issues) [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/wjsutton/ironviz_2020_gallery.svg)](https://github.com/wjsutton/ironviz_2020_gallery/pulls) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+[![Status](https://img.shields.io/badge/status-active-success.svg)]() [![GitHub Issues](https://img.shields.io/github/issues/wjsutton/ironviz_2020_gallery.svg)](https://github.com/wjsutton/ironviz_2020_gallery/issues) [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/wjsutton/ironviz_2020_gallery.svg)](https://github.com/wjsutton/ironviz_2020_gallery/pulls) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 A Gallery of 2020 Ironviz submissions found on Twitter. An offshoot from [wjsutton/datafam](https://github.com/wjsutton/datafam) for reproducibility.
  
-:construction: Repo Under Construction :construction: 
-
 [Twitter][Twitter] :speech_balloon:&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[LinkedIn][LinkedIn] :necktie:&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[GitHub :octocat:][GitHub]&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;[Website][Website] :link:
 
 
